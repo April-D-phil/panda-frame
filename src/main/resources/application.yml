@@ -1,0 +1,84 @@
+server:
+  port: 8080
+
+druid:
+  username: panda
+  password: panda
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.3.30:8005/eureka/ #http://192.168.3.22:8005/eureka/
+  instance:
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+    prefer-ip-address: true
+    status-page-url-path: /index.html #配置在注册中心界面服务列表的Status列点击跳转到项目用
+
+spring:
+  cloud:
+    client:
+      ipAddress: 192.168.3.30
+  application:
+    name: panda-frame
+  datasource:
+    blade:
+      url: jdbc:mysql://192.168.3.30:3306/blade?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.jdbc.Driver
+      initial-size: 5
+      max-active: 100
+      min-idle: 5
+      max-wait: 60000
+      max-pool-prepared-statement-per-connection-size: 20
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      time-between-eviction-runs-millis: 2000
+      min-evictable-idle-time-millis: 600000
+      max-evictable-idle-time-millis: 900000
+      filters: stat #这个不设置的话，在druid管理界面中的SQL监控，是看不到数据的
+      filter:
+        stat: 
+          enabled: true
+          db-type: mysql
+          log-slow-sql: true
+          slow-sql-millis: 2000
+    panda:
+      url: jdbc:mysql://192.168.3.30:3306/panda?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.jdbc.Driver
+      initial-size: 5
+      max-active: 100
+      min-idle: 5
+      max-wait: 60000
+      max-pool-prepared-statement-per-connection-size: 20
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      time-between-eviction-runs-millis: 2000
+      min-evictable-idle-time-millis: 600000
+      max-evictable-idle-time-millis: 900000
+      filters: stat
+      filter:
+        stat: 
+          enabled: true
+          db-type: mysql
+          log-slow-sql: true
+          slow-sql-millis: 2000
+  jpa: 
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    hibernate: 
+      ddl-auto: validate
+  thymeleaf:
+    prefix: classpath:/static/
+  devtools:
+    restart:
+      enabled: true  #设置开启热部署
+      additional-paths: src/main/java #重启目录
+      exclude: WEB-INF/**
+  freemarker:
+    cache: false    #页面不加载缓存，修改即时生效
+

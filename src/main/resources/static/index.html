@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>登录</title>
+	<link rel="stylesheet" href="/css/auth.css">
+</head>
+
+<body>
+	<div class="lowin">
+		<div class="lowin-brand">
+			<img src="/img/kodinger.jpg" alt="logo">
+		</div>
+		<div class="lowin-wrapper">
+			<div class="lowin-box lowin-login">
+				<div class="lowin-box-inner">
+					<form>
+						<p>请登录</p>
+						<div class="lowin-group">
+							<label>邮箱</label>
+							<input id="login-email" type="email" name="email" class="lowin-input" autocomplete="off">
+							<span id="login-email-tip" class="login-email-tip"></span>
+						</div>
+						<div class="lowin-group password-group">
+							<label>密码 <a href="#" class="forgot-link">忘记密码？</a></label>
+							<input id="login-password" type="password" name="password" class="lowin-input">
+							<span id="login-password-tip" class="login-password-tip"></span>
+						</div>
+						<!-- 不能用button元素代替，会自动刷新form，导致页面重刷 -->
+						<input type="button" class="lowin-btn login-btn" id="login-btn" value="登录"/>
+
+						<div class="text-foot">
+							没有账户吗？ <a href="/login/register/page" class="register-link">注册</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	
+		<footer class="lowin-footer">
+			
+		</footer>
+	</div>
+	
+	<!-- dom加载后 -->
+	<script type="text/javascript" src="/js/login/auth.js"></script>
+	<script type="text/javascript" src="/js/util/ajax.js"></script>
+	<script>
+		Auth.initLogin({
+			send: function(){//自定义验证通过后逻辑
+				var email = document.getElementById("login-email").value;
+				var password = document.getElementById("login-password").value;
+				Ajax.init({
+					type: 'post',
+					url: '/login/checkLogin',
+					data: {'email': email,'password': password},
+					dataType: 'json', 
+					success:function(result){ 
+						if(result.rtn=="ok"){
+							alert("成功！");
+						}else{
+							password.value = "";
+							alert("邮箱或密码有误！");
+						}
+					}, 
+					error: function(e){ 
+						alert("身份验证失败！");
+					} 
+				});
+			}
+		});
+		
+	</script>
+</body>
+</html>
